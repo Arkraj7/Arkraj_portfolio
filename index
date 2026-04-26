@@ -1,0 +1,1860 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arkraj Biswas | Environmental Researcher & Policy Analyst</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Share+Tech+Mono&family=Exo+2:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  --bg:#050c07;
+  --bg2:#0a1510;
+  --bg3:#0f1e14;
+  --surface:#111f16;
+  --surface2:#172a1d;
+  --accent:#3ddc84;
+  --accent2:#64ffda;
+  --accent3:#00b4d8;
+  --text:#d4f0dc;
+  --text2:#8fb89a;
+  --text3:#5a7d63;
+  --border:#1e3a27;
+  --border2:#2a5238;
+  --glow:rgba(61,220,132,0.15);
+  --glow2:rgba(100,255,218,0.1);
+  --red:#ff6b6b;
+  --amber:#ffd166;
+  --heading-font:'Orbitron',monospace;
+  --body-font:'Share Tech Mono',monospace;
+  --text-font:'Exo 2',sans-serif;
+}
+
+[data-theme="light"]{
+  --bg:#f0f6f2;
+  --bg2:#e4ede8;
+  --bg3:#d8e8de;
+  --surface:#ffffff;
+  --surface2:#edf5f0;
+  --accent:#0a7a3c;
+  --accent2:#0a6e6e;
+  --accent3:#0077a8;
+  --text:#0a1a0f;
+  --text2:#2d5a3d;
+  --text3:#4a7a5a;
+  --border:#c0daca;
+  --border2:#9ac4ad;
+  --glow:rgba(10,122,60,0.08);
+  --glow2:rgba(10,110,110,0.06);
+  --red:#c0392b;
+  --amber:#d68910;
+}
+
+html{scroll-behavior:smooth}
+
+body{
+  font-family:var(--text-font);
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  transition:background 0.4s,color 0.4s;
+  overflow-x:hidden;
+}
+
+/* ── CANVAS GRID ── */
+#grid-canvas{
+  position:fixed;
+  top:0;left:0;
+  width:100%;height:100%;
+  pointer-events:none;
+  z-index:0;
+  opacity:0.18;
+}
+[data-theme="light"] #grid-canvas{opacity:0.06}
+
+/* ── TOP BAR ── */
+#topbar{
+  position:fixed;top:0;left:0;right:0;
+  z-index:1000;
+  background:rgba(5,12,7,0.92);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  padding:0 2rem;
+  height:52px;
+  gap:1rem;
+  transition:background 0.4s;
+}
+[data-theme="light"] #topbar{background:rgba(240,246,242,0.92)}
+
+.tb-datetime{
+  font-family:var(--body-font);
+  font-size:11px;
+  color:var(--accent);
+  letter-spacing:0.08em;
+  min-width:200px;
+}
+
+.tb-search-wrap{
+  flex:1;
+  max-width:380px;
+  position:relative;
+}
+.tb-search-wrap input{
+  width:100%;
+  background:var(--surface);
+  border:1px solid var(--border2);
+  color:var(--text);
+  font-family:var(--body-font);
+  font-size:12px;
+  padding:6px 36px 6px 14px;
+  border-radius:3px;
+  outline:none;
+  transition:border-color 0.3s,box-shadow 0.3s;
+}
+.tb-search-wrap input:focus{
+  border-color:var(--accent);
+  box-shadow:0 0 0 2px var(--glow);
+}
+.tb-search-wrap input::placeholder{color:var(--text3)}
+.search-icon{
+  position:absolute;right:10px;top:50%;transform:translateY(-50%);
+  font-size:12px;color:var(--text3);pointer-events:none;
+}
+#search-results{
+  position:absolute;top:calc(100% + 6px);left:0;right:0;
+  background:var(--surface2);
+  border:1px solid var(--border2);
+  border-radius:4px;
+  max-height:300px;
+  overflow-y:auto;
+  display:none;
+  z-index:200;
+}
+.sr-item{
+  padding:10px 14px;
+  font-size:12px;
+  color:var(--text2);
+  cursor:pointer;
+  border-bottom:1px solid var(--border);
+  transition:background 0.2s;
+}
+.sr-item:hover{background:var(--surface)}
+.sr-item span{color:var(--accent);font-weight:600}
+
+.tb-spacer{flex:1}
+
+.theme-btn{
+  background:none;
+  border:1px solid var(--border2);
+  color:var(--text2);
+  font-family:var(--body-font);
+  font-size:11px;
+  padding:5px 14px;
+  border-radius:3px;
+  cursor:pointer;
+  letter-spacing:0.05em;
+  transition:all 0.3s;
+}
+.theme-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:52px;left:0;right:0;
+  z-index:999;
+  background:rgba(5,12,7,0.88);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  padding:0 2rem;
+  height:48px;
+  transition:background 0.4s;
+}
+[data-theme="light"] nav{background:rgba(240,246,242,0.88)}
+
+.nav-logo{
+  font-family:var(--heading-font);
+  font-size:12px;
+  font-weight:700;
+  color:var(--accent);
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+  margin-right:2rem;
+  white-space:nowrap;
+}
+
+.nav-links{
+  display:flex;
+  gap:0;
+  list-style:none;
+  overflow-x:auto;
+}
+.nav-links a{
+  font-family:var(--body-font);
+  font-size:11px;
+  color:var(--text3);
+  text-decoration:none;
+  padding:0 14px;
+  height:48px;
+  display:flex;
+  align-items:center;
+  letter-spacing:0.08em;
+  border-bottom:2px solid transparent;
+  transition:color 0.3s,border-color 0.3s;
+  white-space:nowrap;
+}
+.nav-links a:hover,.nav-links a.active{
+  color:var(--accent);
+  border-bottom-color:var(--accent);
+}
+
+/* ── MAIN LAYOUT ── */
+main{
+  position:relative;
+  z-index:1;
+  padding-top:100px;
+}
+
+section{
+  padding:5rem 2rem;
+  max-width:1280px;
+  margin:0 auto;
+}
+
+.section-label{
+  font-family:var(--body-font);
+  font-size:11px;
+  color:var(--accent);
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  margin-bottom:0.5rem;
+}
+.section-title{
+  font-family:var(--heading-font);
+  font-size:clamp(1.4rem,3vw,2.2rem);
+  font-weight:700;
+  color:var(--text);
+  margin-bottom:1rem;
+  line-height:1.2;
+}
+.section-sub{
+  font-family:var(--text-font);
+  color:var(--text2);
+  font-size:0.95rem;
+  max-width:640px;
+  line-height:1.7;
+  margin-bottom:3rem;
+}
+
+hr.section-divider{
+  border:none;
+  border-top:1px solid var(--border);
+  max-width:1280px;
+  margin:0 auto;
+}
+
+/* ── HERO ── */
+#home{
+  min-height:calc(100vh - 100px);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding-top:6rem;
+  max-width:1280px;
+  margin:0 auto;
+}
+
+.hero-tag{
+  font-family:var(--body-font);
+  font-size:12px;
+  color:var(--accent);
+  letter-spacing:0.25em;
+  text-transform:uppercase;
+  margin-bottom:1.5rem;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.hero-tag::before{
+  content:'';
+  display:block;
+  width:40px;height:1px;
+  background:var(--accent);
+}
+
+.hero-title{
+  font-family:var(--heading-font);
+  font-size:clamp(2rem,6vw,4.2rem);
+  font-weight:900;
+  line-height:1.05;
+  margin-bottom:1.5rem;
+  color:var(--text);
+}
+.hero-title .hl{color:var(--accent)}
+.hero-title .hl2{color:var(--accent2)}
+
+.hero-sub{
+  font-family:var(--text-font);
+  font-size:1.05rem;
+  color:var(--text2);
+  max-width:620px;
+  line-height:1.8;
+  margin-bottom:2.5rem;
+}
+
+.hero-badges{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-bottom:3rem;
+}
+.badge{
+  font-family:var(--body-font);
+  font-size:10px;
+  letter-spacing:0.1em;
+  padding:5px 14px;
+  border:1px solid var(--border2);
+  color:var(--text3);
+  border-radius:2px;
+  text-transform:uppercase;
+}
+.badge.accent{border-color:var(--accent);color:var(--accent)}
+
+.hero-ctas{
+  display:flex;
+  gap:1rem;
+  flex-wrap:wrap;
+}
+.btn-primary{
+  font-family:var(--heading-font);
+  font-size:11px;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  padding:12px 28px;
+  background:var(--accent);
+  color:#050c07;
+  border:none;
+  cursor:pointer;
+  border-radius:2px;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-weight:700;
+  transition:all 0.3s;
+}
+.btn-primary:hover{background:var(--accent2);transform:translateY(-1px)}
+.btn-outline{
+  font-family:var(--heading-font);
+  font-size:11px;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  padding:12px 28px;
+  background:transparent;
+  color:var(--accent);
+  border:1px solid var(--accent);
+  cursor:pointer;
+  border-radius:2px;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-weight:600;
+  transition:all 0.3s;
+}
+.btn-outline:hover{background:var(--glow)}
+
+.hero-stats{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:1px;
+  margin-top:4rem;
+  border:1px solid var(--border);
+  background:var(--border);
+}
+.hstat{
+  background:var(--surface);
+  padding:1.5rem;
+}
+.hstat-num{
+  font-family:var(--heading-font);
+  font-size:2rem;
+  font-weight:700;
+  color:var(--accent);
+  line-height:1;
+  margin-bottom:6px;
+}
+.hstat-label{
+  font-family:var(--body-font);
+  font-size:10px;
+  letter-spacing:0.1em;
+  color:var(--text3);
+  text-transform:uppercase;
+}
+
+/* ── ABOUT ── */
+.about-grid{
+  display:grid;
+  grid-template-columns:1fr 1.4fr;
+  gap:4rem;
+  align-items:start;
+}
+@media(max-width:800px){.about-grid{grid-template-columns:1fr}}
+
+.about-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  padding:2rem;
+  border-radius:3px;
+  position:relative;
+  overflow:hidden;
+}
+.about-card::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:3px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+}
+.about-avatar{
+  width:80px;height:80px;
+  background:var(--surface2);
+  border:2px solid var(--accent);
+  border-radius:3px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:var(--heading-font);
+  font-size:1.8rem;
+  color:var(--accent);
+  margin-bottom:1.5rem;
+}
+.about-name{
+  font-family:var(--heading-font);
+  font-size:1.1rem;
+  font-weight:700;
+  color:var(--text);
+  margin-bottom:4px;
+}
+.about-role{
+  font-family:var(--body-font);
+  font-size:11px;
+  color:var(--accent);
+  letter-spacing:0.1em;
+  margin-bottom:1.5rem;
+}
+.about-info-row{
+  display:flex;
+  gap:10px;
+  font-size:12px;
+  color:var(--text2);
+  margin-bottom:8px;
+  font-family:var(--body-font);
+}
+.about-info-row .lbl{color:var(--text3);width:80px;flex-shrink:0}
+
+.skills-list{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:1.5rem;
+}
+.skill-tag{
+  font-family:var(--body-font);
+  font-size:10px;
+  padding:4px 10px;
+  border:1px solid var(--border2);
+  color:var(--text2);
+  border-radius:2px;
+  letter-spacing:0.05em;
+}
+
+.about-content p{
+  color:var(--text2);
+  line-height:1.8;
+  margin-bottom:1rem;
+  font-size:0.95rem;
+}
+.about-content h3{
+  font-family:var(--heading-font);
+  font-size:0.85rem;
+  color:var(--accent2);
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+  margin:2rem 0 1rem;
+}
+
+.timeline{
+  position:relative;
+  padding-left:1.5rem;
+}
+.timeline::before{
+  content:'';
+  position:absolute;left:4px;top:0;bottom:0;
+  width:1px;background:var(--border2);
+}
+.tl-item{
+  position:relative;
+  margin-bottom:1.5rem;
+}
+.tl-item::before{
+  content:'';
+  position:absolute;left:-20px;top:6px;
+  width:8px;height:8px;
+  border:1px solid var(--accent);
+  background:var(--bg);
+  border-radius:50%;
+}
+.tl-year{
+  font-family:var(--body-font);
+  font-size:10px;
+  color:var(--accent);
+  letter-spacing:0.1em;
+  margin-bottom:3px;
+}
+.tl-title{
+  font-family:var(--text-font);
+  font-weight:600;
+  font-size:0.9rem;
+  color:var(--text);
+  margin-bottom:3px;
+}
+.tl-desc{
+  font-size:0.82rem;
+  color:var(--text3);
+}
+
+/* ── RESEARCH TOPICS ── */
+.topics-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:1rem;
+}
+.topic-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  padding:1.5rem;
+  border-radius:3px;
+  cursor:pointer;
+  transition:border-color 0.3s,transform 0.3s;
+  position:relative;
+  overflow:hidden;
+}
+.topic-card::after{
+  content:'';
+  position:absolute;
+  bottom:0;left:0;right:0;
+  height:2px;
+  background:linear-gradient(90deg,transparent,var(--accent),transparent);
+  transform:scaleX(0);
+  transition:transform 0.3s;
+}
+.topic-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.topic-card:hover::after{transform:scaleX(1)}
+
+.topic-icon{
+  font-size:1.8rem;
+  margin-bottom:1rem;
+}
+.topic-title{
+  font-family:var(--heading-font);
+  font-size:0.8rem;
+  font-weight:700;
+  color:var(--accent);
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  margin-bottom:0.5rem;
+}
+.topic-desc{
+  font-size:0.85rem;
+  color:var(--text2);
+  line-height:1.6;
+}
+
+/* ── ENCYCLOPEDIA ── */
+.enc-categories{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-bottom:2rem;
+}
+.cat-btn{
+  font-family:var(--body-font);
+  font-size:11px;
+  padding:6px 16px;
+  border:1px solid var(--border2);
+  background:transparent;
+  color:var(--text3);
+  cursor:pointer;
+  border-radius:2px;
+  letter-spacing:0.08em;
+  transition:all 0.3s;
+}
+.cat-btn.active,.cat-btn:hover{
+  border-color:var(--accent);
+  color:var(--accent);
+  background:var(--glow);
+}
+
+.enc-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:1.5rem;
+}
+.enc-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:3px;
+  overflow:hidden;
+  transition:border-color 0.3s;
+}
+.enc-card:hover{border-color:var(--border2)}
+.enc-card-header{
+  background:var(--surface2);
+  padding:1rem 1.5rem;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.enc-cat-tag{
+  font-family:var(--body-font);
+  font-size:9px;
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+  padding:2px 8px;
+  border-radius:2px;
+  border:1px solid currentColor;
+}
+.enc-card-body{padding:1.5rem}
+.enc-title{
+  font-family:var(--heading-font);
+  font-size:0.85rem;
+  color:var(--text);
+  margin-bottom:0.5rem;
+}
+.enc-excerpt{
+  font-size:0.82rem;
+  color:var(--text2);
+  line-height:1.6;
+  margin-bottom:1rem;
+}
+.enc-read-more{
+  font-family:var(--body-font);
+  font-size:10px;
+  color:var(--accent);
+  letter-spacing:0.1em;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  cursor:pointer;
+  background:none;
+  border:none;
+}
+
+/* ── INFOGRAPHICS ── */
+.infog-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
+  gap:1.5rem;
+}
+.infog-slot{
+  background:var(--surface);
+  border:1px dashed var(--border2);
+  border-radius:4px;
+  min-height:280px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:2rem;
+  position:relative;
+  transition:border-color 0.3s;
+}
+.infog-slot:hover{border-color:var(--accent)}
+.infog-slot.has-content{
+  border-style:solid;
+  border-color:var(--border);
+  align-items:stretch;
+  justify-content:flex-start;
+}
+.infog-placeholder-icon{font-size:2.5rem;margin-bottom:1rem;opacity:0.4}
+.infog-placeholder-text{
+  font-family:var(--body-font);
+  font-size:11px;
+  color:var(--text3);
+  letter-spacing:0.08em;
+  text-align:center;
+}
+.infog-title-bar{
+  font-family:var(--heading-font);
+  font-size:0.75rem;
+  color:var(--accent2);
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  margin-bottom:1rem;
+  padding-bottom:0.75rem;
+  border-bottom:1px solid var(--border);
+}
+
+/* sample infographic chart */
+.bar-chart{width:100%}
+.bar-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:10px;
+  font-size:11px;
+  font-family:var(--body-font);
+}
+.bar-label{color:var(--text2);width:100px;font-size:10px;flex-shrink:0}
+.bar-track{flex:1;background:var(--bg3);height:22px;border-radius:2px;overflow:hidden}
+.bar-fill{
+  height:100%;
+  display:flex;
+  align-items:center;
+  padding-left:8px;
+  font-size:10px;
+  font-weight:600;
+  color:#050c07;
+  border-radius:2px;
+  transition:width 1.5s ease;
+}
+
+/* ── ARTICLES ── */
+.articles-grid{
+  display:grid;
+  grid-template-columns:2fr 1fr;
+  gap:2rem;
+}
+@media(max-width:900px){.articles-grid{grid-template-columns:1fr}}
+
+.article-featured{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:3px;
+  overflow:hidden;
+}
+.article-featured-header{
+  background:var(--surface2);
+  padding:1.5rem;
+  border-bottom:1px solid var(--border);
+}
+.article-meta{
+  display:flex;
+  gap:12px;
+  font-family:var(--body-font);
+  font-size:10px;
+  color:var(--text3);
+  letter-spacing:0.08em;
+  margin-bottom:0.75rem;
+}
+.article-cat{color:var(--accent)}
+.article-title{
+  font-family:var(--heading-font);
+  font-size:1rem;
+  color:var(--text);
+  line-height:1.3;
+  margin-bottom:0.5rem;
+}
+.article-excerpt{
+  font-size:0.88rem;
+  color:var(--text2);
+  line-height:1.7;
+}
+.article-body{padding:1.5rem}
+
+.article-list{
+  display:flex;
+  flex-direction:column;
+  gap:1rem;
+}
+.article-mini{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:3px;
+  padding:1.2rem;
+  transition:border-color 0.3s;
+  cursor:pointer;
+}
+.article-mini:hover{border-color:var(--border2)}
+.article-mini-title{
+  font-family:var(--heading-font);
+  font-size:0.78rem;
+  color:var(--text);
+  margin-bottom:0.4rem;
+  line-height:1.3;
+}
+.article-mini-meta{
+  font-family:var(--body-font);
+  font-size:10px;
+  color:var(--text3);
+  letter-spacing:0.06em;
+}
+
+/* ── COLLABORATE ── */
+.collab-wrap{
+  display:grid;
+  grid-template-columns:1fr 1.2fr;
+  gap:4rem;
+  align-items:start;
+}
+@media(max-width:800px){.collab-wrap{grid-template-columns:1fr}}
+
+.collab-info h3{
+  font-family:var(--heading-font);
+  font-size:0.8rem;
+  color:var(--accent2);
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+  margin-bottom:1rem;
+}
+.collab-info ul{
+  list-style:none;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.collab-info li{
+  display:flex;
+  gap:12px;
+  font-size:0.88rem;
+  color:var(--text2);
+  line-height:1.5;
+}
+.collab-info li::before{
+  content:'→';
+  color:var(--accent);
+  font-family:var(--body-font);
+  flex-shrink:0;
+  margin-top:2px;
+}
+
+.form-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:3px;
+  padding:2rem;
+}
+.form-title{
+  font-family:var(--heading-font);
+  font-size:0.85rem;
+  color:var(--text);
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  margin-bottom:1.5rem;
+  padding-bottom:1rem;
+  border-bottom:1px solid var(--border);
+}
+.form-group{
+  margin-bottom:1.2rem;
+}
+.form-label{
+  display:block;
+  font-family:var(--body-font);
+  font-size:11px;
+  color:var(--text3);
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  margin-bottom:6px;
+}
+.form-input{
+  width:100%;
+  background:var(--bg);
+  border:1px solid var(--border2);
+  color:var(--text);
+  font-family:var(--body-font);
+  font-size:13px;
+  padding:10px 14px;
+  border-radius:2px;
+  outline:none;
+  transition:border-color 0.3s,box-shadow 0.3s;
+  -webkit-appearance:none;
+}
+.form-input:focus{
+  border-color:var(--accent);
+  box-shadow:0 0 0 2px var(--glow);
+}
+.form-input::placeholder{color:var(--text3)}
+textarea.form-input{resize:vertical;min-height:100px;line-height:1.6}
+select.form-input{cursor:pointer}
+
+.form-note{
+  font-family:var(--body-font);
+  font-size:10px;
+  color:var(--text3);
+  margin-top:8px;
+  letter-spacing:0.05em;
+}
+
+/* ── FEEDBACK ── */
+.feedback-wrap{
+  max-width:640px;
+  margin:0 auto;
+}
+.rating-row{
+  display:flex;
+  gap:10px;
+  margin-top:8px;
+}
+.rating-btn{
+  width:40px;height:40px;
+  border:1px solid var(--border2);
+  background:transparent;
+  color:var(--text2);
+  font-family:var(--body-font);
+  font-size:14px;
+  cursor:pointer;
+  border-radius:2px;
+  transition:all 0.2s;
+}
+.rating-btn.sel,.rating-btn:hover{
+  border-color:var(--accent);
+  color:var(--accent);
+  background:var(--glow);
+}
+
+/* ── MODAL ── */
+.modal-overlay{
+  display:none;
+  position:fixed;inset:0;
+  background:rgba(0,0,0,0.75);
+  z-index:9999;
+  align-items:center;
+  justify-content:center;
+  backdrop-filter:blur(4px);
+}
+.modal-overlay.active{display:flex}
+.modal-box{
+  background:var(--surface);
+  border:1px solid var(--accent);
+  border-radius:4px;
+  padding:3rem;
+  max-width:460px;
+  width:90%;
+  text-align:center;
+  animation:modalIn 0.4s ease;
+  position:relative;
+}
+@keyframes modalIn{
+  from{transform:scale(0.85) translateY(20px);opacity:0}
+  to{transform:scale(1) translateY(0);opacity:1}
+}
+.modal-icon{
+  font-size:3rem;
+  margin-bottom:1.5rem;
+  display:block;
+}
+.modal-title{
+  font-family:var(--heading-font);
+  font-size:1.1rem;
+  color:var(--accent);
+  margin-bottom:1rem;
+  letter-spacing:0.1em;
+}
+.modal-body{
+  font-size:0.9rem;
+  color:var(--text2);
+  line-height:1.7;
+  margin-bottom:2rem;
+}
+.modal-close{
+  font-family:var(--heading-font);
+  font-size:10px;
+  letter-spacing:0.12em;
+  padding:10px 24px;
+  background:var(--accent);
+  color:#050c07;
+  border:none;
+  cursor:pointer;
+  border-radius:2px;
+  font-weight:700;
+}
+
+/* ── EXPAND MODAL ── */
+.enc-expand{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:8000;align-items:center;justify-content:center;padding:2rem}
+.enc-expand.active{display:flex}
+.enc-expand-box{
+  background:var(--surface);
+  border:1px solid var(--border2);
+  border-radius:4px;
+  max-width:700px;
+  width:100%;
+  max-height:80vh;
+  overflow-y:auto;
+  padding:2.5rem;
+}
+.enc-expand-box h2{
+  font-family:var(--heading-font);
+  font-size:1.1rem;
+  color:var(--accent);
+  margin-bottom:1rem;
+}
+.enc-expand-box p{
+  color:var(--text2);
+  line-height:1.8;
+  font-size:0.9rem;
+  margin-bottom:1rem;
+}
+.expand-close{
+  position:absolute;top:1rem;right:1rem;
+  background:none;border:1px solid var(--border2);
+  color:var(--text2);font-size:16px;
+  width:36px;height:36px;cursor:pointer;border-radius:2px;
+}
+
+/* ── HIGHLIGHT ── */
+mark.search-hl{
+  background:rgba(61,220,132,0.3);
+  color:var(--text);
+  border-radius:2px;
+  padding:0 2px;
+}
+
+/* ── FOOTER ── */
+footer{
+  position:relative;z-index:1;
+  border-top:1px solid var(--border);
+  padding:3rem 2rem;
+  max-width:1280px;
+  margin:0 auto;
+}
+.footer-grid{
+  display:grid;
+  grid-template-columns:1.5fr 1fr 1fr;
+  gap:3rem;
+  margin-bottom:3rem;
+}
+@media(max-width:700px){.footer-grid{grid-template-columns:1fr}}
+.footer-brand{
+  font-family:var(--heading-font);
+  font-size:1rem;
+  color:var(--accent);
+  margin-bottom:0.75rem;
+}
+.footer-tagline{
+  font-size:0.82rem;
+  color:var(--text3);
+  line-height:1.7;
+  font-family:var(--body-font);
+}
+.footer-col h4{
+  font-family:var(--heading-font);
+  font-size:0.72rem;
+  letter-spacing:0.15em;
+  color:var(--text2);
+  text-transform:uppercase;
+  margin-bottom:1rem;
+}
+.footer-links{list-style:none}
+.footer-links li{margin-bottom:8px}
+.footer-links a{
+  font-size:0.82rem;
+  color:var(--text3);
+  text-decoration:none;
+  font-family:var(--body-font);
+  letter-spacing:0.05em;
+  transition:color 0.2s;
+}
+.footer-links a:hover{color:var(--accent)}
+.footer-bottom{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding-top:2rem;
+  border-top:1px solid var(--border);
+  font-family:var(--body-font);
+  font-size:10px;
+  color:var(--text3);
+  letter-spacing:0.08em;
+  flex-wrap:wrap;
+  gap:1rem;
+}
+.footer-bottom .accent{color:var(--accent)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:600px){
+  nav{padding:0 1rem}
+  section{padding:4rem 1.2rem}
+  .hero-title{font-size:1.8rem}
+  .tb-datetime{display:none}
+  #topbar{padding:0 1rem}
+}
+
+/* ── SCROLL FADE IN ── */
+.fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.7s,transform 0.7s}
+.fade-in.visible{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<canvas id="grid-canvas"></canvas>
+
+<!-- TOP BAR -->
+<div id="topbar">
+  <div class="tb-datetime" id="datetime">Loading...</div>
+  <div class="tb-search-wrap">
+    <input type="text" id="search-input" placeholder="Search the archive...">
+    <span class="search-icon">⌕</span>
+    <div id="search-results"></div>
+  </div>
+  <div class="tb-spacer"></div>
+  <button class="theme-btn" onclick="toggleTheme()">◐ MODE</button>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">A·BISWAS</div>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#home" class="active">HOME</a></li>
+    <li><a href="#about">ABOUT</a></li>
+    <li><a href="#research">RESEARCH</a></li>
+    <li><a href="#encyclopedia">ENCYCLOPEDIA</a></li>
+    <li><a href="#infographics">INFOGRAPHICS</a></li>
+    <li><a href="#articles">ARTICLES</a></li>
+    <li><a href="#collaborate">COLLABORATE</a></li>
+    <li><a href="#feedback">FEEDBACK</a></li>
+  </ul>
+</nav>
+
+<!-- MAIN -->
+<main>
+
+<!-- HERO -->
+<section id="home">
+  <div class="hero-tag">Environmental Researcher & Policy Analyst</div>
+  <h1 class="hero-title">
+    Decoding the<br>
+    <span class="hl">Green</span> <span class="hl2">Future</span><br>
+    of Urban India
+  </h1>
+  <p class="hero-sub">
+    Researcher at National CAMPA · Ministry of Environment, Forest & Climate Change ·
+    Evaluating urban forestry, climate policy, and human-centric outcomes across Indian cities.
+  </p>
+  <div class="hero-badges">
+    <span class="badge accent">GRAAM Embark Fellow 2025–26</span>
+    <span class="badge">Nagar Van Yojana</span>
+    <span class="badge">Urban Ecology</span>
+    <span class="badge">Climate Policy</span>
+    <span class="badge">CAMPA · MoEFCC</span>
+  </div>
+  <div class="hero-ctas">
+    <a href="#research" class="btn-primary">▶ EXPLORE RESEARCH</a>
+    <a href="#collaborate" class="btn-outline">⊕ COLLABORATE</a>
+  </div>
+  <div class="hero-stats">
+    <div class="hstat">
+      <div class="hstat-num">4+</div>
+      <div class="hstat-label">Field Cities</div>
+    </div>
+    <div class="hstat">
+      <div class="hstat-num">3</div>
+      <div class="hstat-label">Active Field Sites</div>
+    </div>
+    <div class="hstat">
+      <div class="hstat-num">5</div>
+      <div class="hstat-label">Thematic Pillars</div>
+    </div>
+    <div class="hstat">
+      <div class="hstat-num">1K+</div>
+      <div class="hstat-label">Acres Studied</div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ABOUT -->
+<section id="about" class="fade-in">
+  <div class="section-label">// ABOUT</div>
+  <h2 class="section-title">The Researcher</h2>
+  <div class="about-grid">
+    <div>
+      <div class="about-card">
+        <div class="about-avatar">AB</div>
+        <div class="about-name">Arkraj Biswas</div>
+        <div class="about-role">INDIA DEVELOPMENT FELLOW · NATIONAL CAMPA</div>
+        <div class="about-info-row"><span class="lbl">Location:</span> Delhi / Gujarat / Bengaluru</div>
+        <div class="about-info-row"><span class="lbl">Ministry:</span> MoEFCC, Government of India</div>
+        <div class="about-info-row"><span class="lbl">Program:</span> GRAAM Embark India Fellowship</div>
+        <div class="about-info-row"><span class="lbl">Period:</span> 2025 – 2026</div>
+        <div class="about-info-row"><span class="lbl">Focus:</span> Nagar Van Yojana Evaluation</div>
+        <div class="skills-list">
+          <span class="skill-tag">Urban Forestry</span>
+          <span class="skill-tag">Policy Research</span>
+          <span class="skill-tag">CVM/WTP</span>
+          <span class="skill-tag">WHO-5</span>
+          <span class="skill-tag">SLF Framework</span>
+          <span class="skill-tag">QGIS</span>
+          <span class="skill-tag">NDVI Analysis</span>
+          <span class="skill-tag">PRA Methods</span>
+          <span class="skill-tag">Mixed Methods</span>
+          <span class="skill-tag">KII · FGD</span>
+        </div>
+      </div>
+    </div>
+    <div class="about-content">
+      <p>
+        I am an environmental researcher and India Development Fellow at National CAMPA (Compensatory Afforestation Fund Management and Planning Authority), Ministry of Environment, Forest and Climate Change, Government of India. My fellowship is part of the GRAAM Embark India Fellowship 2025–26.
+      </p>
+      <p>
+        My research sits at the intersection of <strong style="color:var(--accent)">ecology, social science, and public policy</strong> — evaluating how India's flagship urban forestry programme, the Nagar Van Yojana (NVY), generates human-centric outcomes beyond the conventional tree-count metrics. I apply mixed-methods frameworks including Contingent Valuation (CVM), WHO-5 Well-being Index, and Sustainable Livelihoods Framework (SLF) across field sites in Surat, Gandhinagar, and Bengaluru.
+      </p>
+      <p>
+        I believe meaningful environmental governance must speak the language of people — measuring not just canopy cover and NDVI, but well-being, livelihood resilience, and community belonging.
+      </p>
+      <h3>Research Journey</h3>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-year">2025 · SEP</div>
+          <div class="tl-title">GRAAM Embark Fellowship Begins</div>
+          <div class="tl-desc">Placed at National CAMPA, MoEFCC, New Delhi under Shri Anand Mohan</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2025 · DEC</div>
+          <div class="tl-title">Literature Review Approved</div>
+          <div class="tl-desc">Comprehensive review across 5 thematic areas — approved by Dr. Balu I (GRAAM)</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2026 · JAN</div>
+          <div class="tl-title">Mixed-Methods Framework Finalized</div>
+          <div class="tl-desc">Integrated CVM, WHO-5, SLF, PRA, KII, FGD, and PRANA portal data streams</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2026 · APR–MAY</div>
+          <div class="tl-title">Field Data Collection — Gujarat</div>
+          <div class="tl-desc">Active fieldwork at Surat and Gandhinagar NVY sites</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- RESEARCH -->
+<section id="research" class="fade-in">
+  <div class="section-label">// RESEARCH DOMAINS</div>
+  <h2 class="section-title">Areas of Investigation</h2>
+  <p class="section-sub">Exploring the multi-dimensional interface of urban ecology, policy governance, and community well-being across India's rapidly urbanising landscape.</p>
+  <div class="topics-grid">
+    <div class="topic-card">
+      <div class="topic-icon">🌳</div>
+      <div class="topic-title">Urban Forestry</div>
+      <div class="topic-desc">Evaluating ecological outcomes of Nagar Van Yojana sites — canopy cover, NDVI indices, biodiversity audits, and carbon sequestration potential across Indian cities.</div>
+    </div>
+    <div class="topic-card">
+      <div class="topic-icon">🧠</div>
+      <div class="topic-title">Psychological Well-being</div>
+      <div class="topic-desc">Applying the WHO-5 Well-being Index to measure the mental health and restorative benefits of urban green spaces for communities living near NVY forests.</div>
+    </div>
+    <div class="topic-card">
+      <div class="topic-icon">⚖️</div>
+      <div class="topic-title">Environmental Governance</div>
+      <div class="topic-desc">Analyzing PPP frameworks, CAMPA fund flows, ULB coordination, and CSR/CER mechanisms that shape urban forestry policy implementation at scale.</div>
+    </div>
+    <div class="topic-card">
+      <div class="topic-icon">🌡️</div>
+      <div class="topic-title">Urban Heat & Climate</div>
+      <div class="topic-desc">Investigating the urban heat island mitigation role of city forests — integrating satellite thermal data, PRANA portal records, and community perception surveys.</div>
+    </div>
+    <div class="topic-card">
+      <div class="topic-icon">💼</div>
+      <div class="topic-title">Sustainable Livelihoods</div>
+      <div class="topic-desc">Using the SLF five-capital framework (human, social, natural, physical, financial) to map livelihood impacts of green space on peri-urban and urban communities.</div>
+    </div>
+    <div class="topic-card">
+      <div class="topic-icon">📊</div>
+      <div class="topic-title">Monitoring & Evaluation</div>
+      <div class="topic-desc">Proposing qualitative outcome indicators to supplement NVY's quantitative PMU reporting — filling critical M&E gaps in India's urban forestry measurement system.</div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ENCYCLOPEDIA -->
+<section id="encyclopedia" class="fade-in">
+  <div class="section-label">// ENCYCLOPEDIA</div>
+  <h2 class="section-title">Environmental & Climate Archive</h2>
+  <p class="section-sub">A living knowledge base on key concepts, frameworks, and findings in environmental science, climate policy, and urban ecology. Paste or expand any entry.</p>
+
+  <div class="enc-categories" id="enc-cats">
+    <button class="cat-btn active" onclick="filterEnc('all',this)">ALL ENTRIES</button>
+    <button class="cat-btn" onclick="filterEnc('policy',this)">POLICY</button>
+    <button class="cat-btn" onclick="filterEnc('ecology',this)">ECOLOGY</button>
+    <button class="cat-btn" onclick="filterEnc('climate',this)">CLIMATE</button>
+    <button class="cat-btn" onclick="filterEnc('methods',this)">METHODS</button>
+  </div>
+
+  <div class="enc-grid" id="enc-grid">
+    <div class="enc-card" data-cat="policy">
+      <div class="enc-card-header">
+        <span class="enc-cat-tag" style="color:var(--accent)">POLICY</span>
+        <span style="font-family:var(--body-font);font-size:10px;color:var(--text3);margin-left:auto">Updated Apr 2026</span>
+      </div>
+      <div class="enc-card-body">
+        <div class="enc-title">Nagar Van Yojana (NVY)</div>
+        <div class="enc-excerpt">A flagship urban forestry scheme launched by MoEFCC under NAEB, targeting development of 1000 urban forests across India's cities by 2027. The scheme allocates ₹50 lakh–₹2 crore per city per year through CAMPA funds, targeting cities with population above 1 lakh.</div>
+        <button class="enc-read-more" onclick="openEnc('nvy')">READ FULL ENTRY →</button>
+      </div>
+    </div>
+    <div class="enc-card" data-cat="policy">
+      <div class="enc-card-header">
+        <span class="enc-cat-tag" style="color:var(--accent)">POLICY</span>
+        <span style="font-family:var(--body-font);font-size:10px;color:var(--text3);margin-left:auto">Updated Apr 2026</span>
+      </div>
+      <div class="enc-card-body">
+        <div class="enc-title">CAMPA & CAF Act 2016</div>
+        <div class="enc-excerpt">The Compensatory Afforestation Fund Act established a pooled corpus of over ₹66,000 crore for afforestation activities. National CAMPA and State CAMPAs govern fund disbursement for ecological restoration, urban forestry, and biodiversity conservation nationwide.</div>
+        <button class="enc-read-more" onclick="openEnc('campa')">READ FULL ENTRY →</button>
+      </div>
+    </div>
+    <div class="enc-card" data-cat="ecology">
+      <div class="enc-card-header">
+        <span class="enc-cat-tag" style="color:var(--accent2)">ECOLOGY</span>
+        <span style="font-family:var(--body-font);font-size:10px;color:var(--text3);margin-left:auto">Updated Mar 2026</span>
+      </div>
+      <div class="enc-card-body">
+        <div class="enc-title">NDVI & Urban Green Monitoring</div>
+        <div class="enc-excerpt">The Normalized Difference Vegetation Index (NDVI) uses satellite imagery (Sentinel-2, Landsat) to quantify vegetation density. Applied to NVY sites through e-Green Watch and KML boundary audits, it forms the backbone of India's green cover monitoring system.</div>
+        <button class="enc-read-more" onclick="openEnc('ndvi')">READ FULL ENTRY →</button>
+      </div>
+    </div>
+    <div class="enc-card" data-cat="climate">
+      <div class="enc-card-header">
+        <span class="enc-cat-tag" style="color:var(--amber)">CLIMATE</span>
+        <span style="font-family:var(--body-font);font-size:10px;color:var(--text3);margin-left:auto">Updated Apr 2026</span>
+      </div>
+      <div class="enc-card-body">
+        <div class="enc-title">Urban Heat Island Effect</div>
+        <div class="enc-excerpt">The Urban Heat Island (UHI) phenomenon causes city temperatures to be 2–5°C higher than surrounding rural areas. Urban forests can reduce surface temperatures by up to 8°C through evapotranspiration and shading. PRANA portal tracks air quality co-benefits of urban green.</div>
+        <button class="enc-read-more" onclick="openEnc('uhi')">READ FULL ENTRY →</button>
+      </div>
+    </div>
+    <div class="enc-card" data-cat="methods">
+      <div class="enc-card-header">
+        <span class="enc-cat-tag" style="color:var(--accent3)">METHODS</span>
+        <span style="font-family:var(--body-font);font-size:10px;color:var(--text3);margin-left:auto">Updated Feb 2026</span>
+      </div>
+      <div class="enc-card-body">
+        <div class="enc-title">Contingent Valuation Method (CVM)</div>
+        <div class="enc-excerpt">CVM elicits willingness-to-pay (WTP) for non-market environmental goods through hypothetical scenarios. Double-bounded dichotomous choice design improves statistical efficiency. Applied to NVY sites to estimate the economic value communities place on urban forest ecosystem services.</div>
+        <button class="enc-read-more" onclick="openEnc('cvm')">READ FULL ENTRY →</button>
+      </div>
+    </div>
+    <div class="enc-card" data-cat="methods">
+      <div class="enc-card-header">
+        <span class="enc-cat-tag" style="color:var(--accent3)">METHODS</span>
+        <span style="font-family:var(--body-font);font-size:10px;color:var(--text3);margin-left:auto">Updated Mar 2026</span>
+      </div>
+      <div class="enc-card-body">
+        <div class="enc-title">Sustainable Livelihoods Framework</div>
+        <div class="enc-excerpt">The SLF maps five capital assets — Human, Social, Natural, Physical, and Financial — to understand community vulnerability and resilience. Pentagon radar diagrams visualize capital profiles across demographic groups in NVY-adjacent communities in Gujarat and Karnataka.</div>
+        <button class="enc-read-more" onclick="openEnc('slf')">READ FULL ENTRY →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- INFOGRAPHICS -->
+<section id="infographics" class="fade-in">
+  <div class="section-label">// INFOGRAPHICS</div>
+  <h2 class="section-title">Data Visualizations</h2>
+  <p class="section-sub">Visual summaries of key research findings, policy frameworks, and ecological data. Paste your own images or charts into any slot below.</p>
+  <div class="infog-grid">
+
+    <!-- Live sample chart -->
+    <div class="infog-slot has-content">
+      <div class="infog-title-bar">NVY CITY COVERAGE — TOP STATES (2024)</div>
+      <div class="bar-chart" id="bar-chart-1"></div>
+    </div>
+
+    <!-- Placeholder slots -->
+    <div class="infog-slot">
+      <div class="infog-placeholder-icon">📊</div>
+      <div class="infog-placeholder-text">INFOGRAPHIC SLOT 02<br><br>Paste your image,<br>chart, or diagram here</div>
+    </div>
+    <div class="infog-slot">
+      <div class="infog-placeholder-icon">🗺️</div>
+      <div class="infog-placeholder-text">INFOGRAPHIC SLOT 03<br><br>QGIS Map / Satellite<br>Imagery Overlay</div>
+    </div>
+    <div class="infog-slot">
+      <div class="infog-placeholder-icon">📈</div>
+      <div class="infog-placeholder-text">INFOGRAPHIC SLOT 04<br><br>WHO-5 Score<br>Distribution Chart</div>
+    </div>
+    <div class="infog-slot">
+      <div class="infog-placeholder-icon">🌡️</div>
+      <div class="infog-placeholder-text">INFOGRAPHIC SLOT 05<br><br>Urban Heat Island<br>Thermal Analysis</div>
+    </div>
+    <div class="infog-slot">
+      <div class="infog-placeholder-icon">🕸️</div>
+      <div class="infog-placeholder-text">INFOGRAPHIC SLOT 06<br><br>SLF Pentagon<br>Radar Diagram</div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ARTICLES -->
+<section id="articles" class="fade-in">
+  <div class="section-label">// ARTICLES & COMMENTARY</div>
+  <h2 class="section-title">Field Notes & Analysis</h2>
+  <p class="section-sub">Research insights, policy commentary, and field observations from across India's urban forestry landscape.</p>
+  <div class="articles-grid">
+    <div class="article-featured">
+      <div class="article-featured-header">
+        <div class="article-meta">
+          <span class="article-cat">FEATURED ESSAY</span>
+          <span>·</span>
+          <span>April 2026</span>
+          <span>·</span>
+          <span>8 min read</span>
+        </div>
+        <div class="article-title">India's Urban Heat Crisis: From Welfare to Rights — Rethinking Green Space Policy</div>
+      </div>
+      <div class="article-body">
+        <p class="article-excerpt">India's cities are heating up — literally. As urban heat islands intensify across Surat, Indore, Ranchi, and Visakhapatnam, the Nagar Van Yojana emerges not merely as an afforestation scheme, but as a critical mechanism in the welfare-to-rights paradigm shift in environmental governance. This essay interrogates whether urban forests are being managed as public goods or policy metrics...</p>
+        <br>
+        <button class="enc-read-more" onclick="openArticle()">CONTINUE READING →</button>
+      </div>
+    </div>
+    <div class="article-list">
+      <div class="article-mini">
+        <div class="article-mini-meta">POLICY NOTE · Mar 2026</div>
+        <div class="article-mini-title">CAMPA Fund Flows and the Last-Mile Implementation Gap in Urban Forestry</div>
+      </div>
+      <div class="article-mini">
+        <div class="article-mini-meta">FIELD REPORT · Feb 2026</div>
+        <div class="article-mini-title">Surat NVY Site Assessment: Community Perceptions and Ecological Baseline</div>
+      </div>
+      <div class="article-mini">
+        <div class="article-mini-meta">ANALYSIS · Jan 2026</div>
+        <div class="article-mini-title">Who Benefits? Disaggregating Urban Forest Access by Socioeconomic Strata</div>
+      </div>
+      <div class="article-mini">
+        <div class="article-mini-meta">COMMENTARY · Dec 2025</div>
+        <div class="article-mini-title">The NDVI Trap: Why Tree Counts Alone Cannot Measure Urban Forest Success</div>
+      </div>
+      <div class="article-mini" style="border-style:dashed;text-align:center;cursor:default">
+        <div style="font-family:var(--body-font);font-size:10px;color:var(--text3);padding:0.5rem">⊕ MORE ARTICLES COMING SOON</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- COLLABORATE -->
+<section id="collaborate" class="fade-in">
+  <div class="section-label">// COLLABORATE</div>
+  <h2 class="section-title">Work With This Archive</h2>
+  <p class="section-sub">Researchers, students, journalists, and practitioners are welcome to contribute, co-author, or access extended data. Register below — our team will reach out via email with access details.</p>
+
+  <div class="collab-wrap">
+    <div class="collab-info">
+      <h3>What you can do</h3>
+      <ul>
+        <li>Contribute entries to the Environmental Encyclopedia</li>
+        <li>Co-author field notes or policy briefs on urban ecology topics</li>
+        <li>Access raw datasets from NVY evaluation field sites</li>
+        <li>Share infographics, maps, and visualizations for this archive</li>
+        <li>Propose new research topics or thematic cross-collaborations</li>
+        <li>Connect with the research team at National CAMPA / GRAAM</li>
+      </ul>
+      <br>
+      <div style="background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--accent);padding:1.2rem;border-radius:2px;font-size:0.85rem;color:var(--text2);line-height:1.7">
+        ℹ After submitting your registration, an automatic confirmation will be sent. Our team will review your topic of interest and grant editorial access via Gmail within 2–3 working days.
+      </div>
+    </div>
+
+    <div class="form-card">
+      <div class="form-title">// REGISTER FOR ACCESS</div>
+      <form id="collab-form" onsubmit="submitCollab(event)">
+        <div class="form-group">
+          <label class="form-label">Full Name *</label>
+          <input type="text" class="form-input" id="c-name" placeholder="Your full name" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address *</label>
+          <input type="email" class="form-input" id="c-email" placeholder="your@email.com" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Affiliation / Institution</label>
+          <input type="text" class="form-input" id="c-affil" placeholder="University, NGO, Ministry, etc.">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Topic of Interest *</label>
+          <select class="form-input" id="c-topic" required>
+            <option value="">— Select a topic —</option>
+            <option>Urban Forestry & Ecology</option>
+            <option>Climate Resilience & UHI</option>
+            <option>Environmental Policy & Governance</option>
+            <option>Community Well-being & Livelihoods</option>
+            <option>Monitoring & Evaluation Methods</option>
+            <option>Infographics & Data Visualization</option>
+            <option>Other / Custom Topic</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Brief Message</label>
+          <textarea class="form-input" id="c-msg" placeholder="Tell us what you'd like to contribute or explore..."></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Access Type</label>
+          <select class="form-input" id="c-access">
+            <option value="">— Select access type —</option>
+            <option>Reader / Viewer</option>
+            <option>Encyclopedia Contributor</option>
+            <option>Article Co-author</option>
+            <option>Data Access</option>
+            <option>Full Editorial Access</option>
+          </select>
+        </div>
+        <div class="form-note">* Required fields. Your email will only be used to send access credentials. We do not share personal data.</div>
+        <br>
+        <button type="submit" class="btn-primary" style="width:100%;justify-content:center">⊕ SUBMIT REGISTRATION</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- FEEDBACK -->
+<section id="feedback" class="fade-in">
+  <div class="section-label">// FEEDBACK</div>
+  <h2 class="section-title">Share Your Thoughts</h2>
+  <div class="feedback-wrap">
+    <p class="section-sub" style="margin-bottom:2rem">Your feedback helps improve the quality and relevance of this research archive. All responses are anonymous.</p>
+    <div class="form-card">
+      <div class="form-title">// FEEDBACK FORM</div>
+      <form id="feedback-form" onsubmit="submitFeedback(event)">
+        <div class="form-group">
+          <label class="form-label">Overall Experience</label>
+          <div class="rating-row" id="rating-row">
+            <button type="button" class="rating-btn" onclick="setRating(1,this)">1</button>
+            <button type="button" class="rating-btn" onclick="setRating(2,this)">2</button>
+            <button type="button" class="rating-btn" onclick="setRating(3,this)">3</button>
+            <button type="button" class="rating-btn" onclick="setRating(4,this)">4</button>
+            <button type="button" class="rating-btn" onclick="setRating(5,this)">5</button>
+          </div>
+          <div class="form-note" style="margin-top:6px">1 = Needs work · 5 = Excellent</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">What did you find most useful?</label>
+          <textarea class="form-input" id="fb-useful" placeholder="Research content, infographics, encyclopedia entries..."></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">What could be improved?</label>
+          <textarea class="form-input" id="fb-improve" placeholder="Missing topics, UI suggestions, accessibility..."></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Your Role</label>
+          <select class="form-input" id="fb-role">
+            <option value="">— Select (optional) —</option>
+            <option>Researcher / Academic</option>
+            <option>Student</option>
+            <option>Policy Professional</option>
+            <option>Journalist / Media</option>
+            <option>NGO / Civil Society</option>
+            <option>Government Official</option>
+            <option>General Public</option>
+          </select>
+        </div>
+        <button type="submit" class="btn-primary" style="width:100%;justify-content:center">✓ SUBMIT FEEDBACK</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">ARKRAJ BISWAS</div>
+      <div class="footer-tagline">Environmental Researcher · India Development Fellow<br>National CAMPA · Ministry of Environment, Forest & Climate Change<br>GRAAM Embark India Fellowship 2025–26</div>
+    </div>
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <ul class="footer-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#research">Research</a></li>
+        <li><a href="#encyclopedia">Encyclopedia</a></li>
+        <li><a href="#infographics">Infographics</a></li>
+        <li><a href="#articles">Articles</a></li>
+        <li><a href="#collaborate">Collaborate</a></li>
+        <li><a href="#feedback">Feedback</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <ul class="footer-links">
+        <li><a href="#">National CAMPA</a></li>
+        <li><a href="#">GRAAM Fellowship</a></li>
+        <li><a href="#">MoEFCC Portal</a></li>
+        <li><a href="#">PRANA Portal</a></li>
+        <li><a href="#">e-Green Watch</a></li>
+        <li><a href="#feedback">Send Feedback</a></li>
+        <li><a href="#collaborate">Register as Contributor</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 ARKRAJ BISWAS · ALL RIGHTS RESERVED</span>
+    <span>BUILT FOR <span class="accent">RESEARCH</span> · POWERED BY <span class="accent">PURPOSE</span></span>
+    <span id="footer-time"></span>
+  </div>
+</footer>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="collab-modal">
+  <div class="modal-box">
+    <span class="modal-icon">✅</span>
+    <div class="modal-title">// ACCESS REQUEST RECEIVED</div>
+    <div class="modal-body" id="modal-body-text">
+      Thank you! Your registration has been submitted successfully.<br><br>
+      Our team will review your topic of interest and connect with you via Gmail within <strong style="color:var(--accent)">2–3 working days</strong> with your access credentials and next steps.
+    </div>
+    <button class="modal-close" onclick="closeModal('collab-modal')">CLOSE ×</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="feedback-modal">
+  <div class="modal-box">
+    <span class="modal-icon">🙏</span>
+    <div class="modal-title">// FEEDBACK RECORDED</div>
+    <div class="modal-body">
+      Thank you for taking the time to share your thoughts.<br><br>
+      Your feedback helps make this environmental research archive more useful for researchers, practitioners, and the public.
+    </div>
+    <button class="modal-close" onclick="closeModal('feedback-modal')">CLOSE ×</button>
+  </div>
+</div>
+
+<!-- ENC EXPAND MODAL -->
+<div class="enc-expand" id="enc-expand">
+  <div class="enc-expand-box" id="enc-expand-box">
+    <button class="expand-close" onclick="closeEnc()">✕</button>
+    <div id="enc-expand-content"></div>
+  </div>
+</div>
+
+<script>
+// ── CLOCK ──
+function updateClock(){
+  const now=new Date();
+  const opts={weekday:'short',year:'numeric',month:'short',day:'numeric'};
+  const d=now.toLocaleDateString('en-IN',opts).toUpperCase();
+  const t=now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
+  const el=document.getElementById('datetime');
+  const fe=document.getElementById('footer-time');
+  if(el)el.textContent=`⬤ ${d}  //  ${t}`;
+  if(fe)fe.textContent=t;
+}
+setInterval(updateClock,1000);updateClock();
+
+// ── THEME ──
+function toggleTheme(){
+  const h=document.documentElement;
+  const t=h.getAttribute('data-theme')==='dark'?'light':'dark';
+  h.setAttribute('data-theme',t);
+  document.querySelector('.theme-btn').textContent=t==='dark'?'◐ MODE':'☀ MODE';
+}
+
+// ── CANVAS GRID ──
+(function(){
+  const c=document.getElementById('grid-canvas');
+  const ctx=c.getContext('2d');
+  function resize(){c.width=window.innerWidth;c.height=window.innerHeight}
+  resize();window.addEventListener('resize',resize);
+  function draw(){
+    ctx.clearRect(0,0,c.width,c.height);
+    const isDark=document.documentElement.getAttribute('data-theme')==='dark';
+    ctx.strokeStyle=isDark?'#3ddc84':'#0a7a3c';
+    ctx.lineWidth=0.5;
+    const gs=60;
+    for(let x=0;x<c.width;x+=gs){
+      ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,c.height);ctx.stroke();
+    }
+    for(let y=0;y<c.height;y+=gs){
+      ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(c.width,y);ctx.stroke();
+    }
+  }
+  draw();
+  setInterval(draw,2000);
+})();
+
+// ── NAV SCROLL ──
+const sections=document.querySelectorAll('section[id]');
+const navAs=document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll',()=>{
+  let cur='';
+  sections.forEach(s=>{
+    if(window.scrollY>=s.offsetTop-120)cur=s.id;
+  });
+  navAs.forEach(a=>{
+    a.classList.toggle('active',a.getAttribute('href')==='#'+cur);
+  });
+},{passive:true});
+
+// ── FADE IN ──
+const fades=document.querySelectorAll('.fade-in');
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});
+},{threshold:0.1});
+fades.forEach(f=>obs.observe(f));
+
+// ── SEARCH ──
+const searchIndex=[
+  {title:'Nagar Van Yojana',section:'encyclopedia',id:'encyclopedia',text:'flagship urban forestry scheme launched by MoEFCC'},
+  {title:'CAMPA & CAF Act 2016',section:'encyclopedia',id:'encyclopedia',text:'Compensatory Afforestation Fund Management'},
+  {title:'NDVI & Urban Green Monitoring',section:'encyclopedia',id:'encyclopedia',text:'Normalized Difference Vegetation Index satellite imagery'},
+  {title:'Urban Heat Island Effect',section:'encyclopedia',id:'encyclopedia',text:'city temperatures 2-5 degrees higher urban forests reduce surface temp'},
+  {title:'Contingent Valuation CVM',section:'encyclopedia',id:'encyclopedia',text:'willingness to pay non-market environmental goods'},
+  {title:'Sustainable Livelihoods Framework',section:'encyclopedia',id:'encyclopedia',text:'five capital assets human social natural physical financial'},
+  {title:'About Arkraj Biswas',section:'about',id:'about',text:'India Development Fellow National CAMPA GRAAM'},
+  {title:'Urban Forestry Research',section:'research',id:'research',text:'evaluating ecological outcomes canopy cover NDVI'},
+  {title:'India Urban Heat Crisis Article',section:'articles',id:'articles',text:'welfare to rights rethinking green space policy'},
+  {title:'Infographics & Data Viz',section:'infographics',id:'infographics',text:'NVY city coverage state data visualizations'},
+  {title:'Collaborate & Contribute',section:'collaborate',id:'collaborate',text:'encyclopedia contributor editor data access registration'},
+  {title:'Feedback Form',section:'feedback',id:'feedback',text:'share thoughts rating experience improvement'},
+];
+
+const si=document.getElementById('search-input');
+const sr=document.getElementById('search-results');
+
+si.addEventListener('input',function(){
+  const q=this.value.trim().toLowerCase();
+  if(q.length<2){sr.style.display='none';return;}
+  const hits=searchIndex.filter(item=>
+    item.title.toLowerCase().includes(q)||item.text.toLowerCase().includes(q)
+  );
+  if(!hits.length){sr.style.display='none';return;}
+  sr.innerHTML=hits.map(h=>`
+    <div class="sr-item" onclick="goTo('${h.id}')">
+      <span>${h.title}</span><br>
+      <span style="color:var(--text3);font-size:11px">${h.section.toUpperCase()}</span>
+    </div>`).join('');
+  sr.style.display='block';
+});
+
+document.addEventListener('click',e=>{if(!si.contains(e.target))sr.style.display='none'});
+
+function goTo(id){
+  document.getElementById(id)?.scrollIntoView({behavior:'smooth'});
+  sr.style.display='none';si.value='';
+}
+
+// ── BAR CHART ──
+const barData=[
+  {label:'Gujarat',pct:92,color:'#3ddc84'},
+  {label:'Maharashtra',pct:78,color:'#64ffda'},
+  {label:'Karnataka',pct:71,color:'#3ddc84'},
+  {label:'Rajasthan',pct:65,color:'#64ffda'},
+  {label:'Tamil Nadu',pct:58,color:'#3ddc84'},
+  {label:'Uttar Pradesh',pct:49,color:'#64ffda'},
+];
+const bc=document.getElementById('bar-chart-1');
+if(bc){
+  bc.innerHTML=barData.map(d=>`
+    <div class="bar-row">
+      <span class="bar-label">${d.label}</span>
+      <div class="bar-track">
+        <div class="bar-fill" style="width:${d.pct}%;background:${d.color}">${d.pct}%</div>
+      </div>
+    </div>`).join('');
+}
+
+// ── ENC FILTER ──
+function filterEnc(cat,btn){
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.enc-card').forEach(c=>{
+    c.style.display=(cat==='all'||c.dataset.cat===cat)?'':'none';
+  });
+}
+
+// ── ENC DATA ──
+const encData={
+  nvy:{title:'Nagar Van Yojana (NVY)',body:`<p>The Nagar Van Yojana (NVY) is India's flagship urban forestry scheme launched by the Ministry of Environment, Forest and Climate Change (MoEFCC) under the National Afforestation and Eco-Development Board (NAEB). It targets the development of 1000 urban forests across Indian cities by 2027.</p><p>The scheme provides financial support ranging from ₹50 lakh to ₹2 crore per city per year, channeled through CAMPA (Compensatory Afforestation Fund Management and Planning Authority). Eligible cities must have a population exceeding 1 lakh and are expected to identify suitable land parcels — typically degraded municipal or revenue land — for forest development.</p><p>Critically, NVY's current PMU (Programme Management Unit) reporting framework relies predominantly on quantitative indicators: number of saplings planted, survival rates, area covered, and NDVI change. This creates a measurement gap that obscures human-centric outcomes including well-being, livelihood impact, and community participation.</p><p><strong style="color:var(--accent)">Key evaluation gaps:</strong> No standardized well-being measurement protocol exists. Livelihood co-benefits are untracked. Community governance structures remain informal. The welfare-to-rights paradigm shift remains unrealized at the implementation level.</p>`},
+  campa:{title:'CAMPA & CAF Act 2016',body:`<p>The Compensatory Afforestation Fund (CAF) Act 2016 established a legal framework for managing compensatory afforestation funds collected from project proponents whose activities divert forest land. The Act created a pooled corpus estimated at over ₹66,000 crore — one of India's largest environmental funds.</p><p>National CAMPA (under MoEFCC) provides policy direction and oversight, while 36 State CAMPAs manage actual implementation. Annual Plans of Operations (APOs) govern fund disbursement for ecological restoration, urban forestry, wildlife protection, and biodiversity conservation.</p><p>The NVY draws significantly from CAMPA allocations, creating a critical link between industrial forest diversion and urban green infrastructure investment — a compensatory logic that remains under-examined in policy literature.</p>`},
+  ndvi:{title:'NDVI & Urban Green Space Monitoring',body:`<p>The Normalized Difference Vegetation Index (NDVI) is calculated from near-infrared (NIR) and red spectral bands of satellite imagery using the formula: NDVI = (NIR − Red) / (NIR + Red). Values range from -1 to +1, where values above 0.3 typically indicate healthy vegetation.</p><p>For NVY monitoring, NDVI analysis is conducted through the e-Green Watch platform and cross-referenced with KML boundary files of individual forest patches. Sentinel-2 (10m resolution) and Landsat-8 (30m) are the primary satellite sources used in Indian urban forestry monitoring.</p><p>However, NDVI has limitations in urban contexts: it cannot distinguish between native biodiversity-rich plantations and monoculture lawns, both of which may show similar NDVI values. It also fails to capture understory diversity, soil health, or community access equity — all critical outcomes for a human-centric NVY evaluation.</p>`},
+  uhi:{title:'Urban Heat Island (UHI) Effect',body:`<p>The Urban Heat Island (UHI) effect occurs when built urban surfaces (concrete, asphalt, glass) absorb and re-emit solar radiation more intensely than natural vegetation, causing urban temperatures to exceed surrounding rural areas by 2–5°C or more — up to 10°C in extreme cases.</p><p>Urban forests mitigate UHI through three primary mechanisms: (1) Evapotranspiration — trees release water vapor, cooling surrounding air; (2) Shading — canopy cover reduces solar radiation reaching surfaces; (3) Albedo modification — vegetated surfaces reflect more solar energy than dark built surfaces.</p><p>Studies indicate that well-established urban forests can reduce local surface temperatures by 5–8°C. In Indian cities facing extreme heat events (Surat, Ahmedabad, Nagpur), this cooling effect translates to measurable public health outcomes including reduced heat-related mortality and hospital admissions.</p><p>The PRANA portal (Programme for National Air Quality) tracks co-benefits of urban green infrastructure including particulate matter (PM2.5/PM10) reduction — closely linked to tree cover in Indian urban areas.</p>`},
+  cvm:{title:'Contingent Valuation Method (CVM)',body:`<p>The Contingent Valuation Method (CVM) is a stated preference technique used in environmental economics to estimate the monetary value that people assign to non-market environmental goods — such as clean air, biodiversity, or urban forest ecosystem services.</p><p>In the NVY evaluation framework, CVM is applied using a double-bounded dichotomous choice (DBDC) design, where respondents are first asked whether they would be willing to pay (WTP) a certain amount (Bid A), then followed up with a higher (Bid B+) or lower bid (Bid B-) depending on their initial response. This design is statistically more efficient than single-bounded formats and yields tighter confidence intervals around WTP estimates.</p><p>For NVY sites in Surat and Gandhinagar, the CVM instrument presents a hypothetical scenario: respondents are asked about their WTP for improved urban forest access, maintenance, and expansion — controlling for income, distance to site, frequency of use, and socioeconomic characteristics.</p><p>The resulting WTP estimates are aggregated across urban populations to derive a total economic value of NVY ecosystem services per site — a figure that strengthens the policy case for CAMPA investment in urban forestry beyond ecological rationale alone.</p>`},
+  slf:{title:'Sustainable Livelihoods Framework (SLF)',body:`<p>The Sustainable Livelihoods Framework (SLF), developed by DFID and adapted for diverse research contexts, conceptualizes household vulnerability and resilience through five capital asset categories: Human Capital (skills, health, education), Social Capital (networks, trust, institutions), Natural Capital (land, water, forests), Physical Capital (infrastructure, tools), and Financial Capital (savings, income, credit access).</p><p>In the NVY evaluation, SLF provides a holistic lens for assessing how urban forest development affects the livelihood profiles of communities living adjacent to NVY sites. A pentagon radar diagram visualizes the relative strength of each capital for different demographic subgroups — allowing comparison between pre- and post-NVY scenarios.</p><p>Key research questions addressed by SLF in the Gujarat fieldwork include: Does NVY access improve natural capital (recreational use, herbs, shade)? Does it build social capital (community governance, participation)? Does it affect human capital (mental health, physical activity)? The SLF answers these through FGDs, social mapping, and structured KII interviews with ULB officials and forest department staff.</p>`},
+};
+
+function openEnc(id){
+  const d=encData[id];if(!d)return;
+  document.getElementById('enc-expand-content').innerHTML=`<h2>${d.title}</h2>${d.body}`;
+  document.getElementById('enc-expand').classList.add('active');
+}
+function closeEnc(){document.getElementById('enc-expand').classList.remove('active')}
+
+// ── COLLAB FORM ──
+let selectedRating=0;
+function setRating(n,btn){
+  selectedRating=n;
+  document.querySelectorAll('.rating-btn').forEach((b,i)=>b.classList.toggle('sel',i<n));
+}
+
+function submitCollab(e){
+  e.preventDefault();
+  const name=document.getElementById('c-name').value;
+  const topic=document.getElementById('c-topic').value;
+  document.getElementById('modal-body-text').innerHTML=`
+    Thank you, <strong style="color:var(--accent)">${name}</strong>! Your registration has been submitted.<br><br>
+    Topic: <strong style="color:var(--accent2)">${topic}</strong><br><br>
+    Our team will connect with you via Gmail within <strong style="color:var(--accent)">2–3 working days</strong> with your access credentials.
+  `;
+  document.getElementById('collab-modal').classList.add('active');
+  e.target.reset();
+}
+
+function submitFeedback(e){
+  e.preventDefault();
+  document.getElementById('feedback-modal').classList.add('active');
+  e.target.reset();
+  selectedRating=0;
+  document.querySelectorAll('.rating-btn').forEach(b=>b.classList.remove('sel'));
+}
+
+function closeModal(id){document.getElementById(id).classList.remove('active')}
+
+// click outside modal to close
+document.querySelectorAll('.modal-overlay').forEach(m=>{
+  m.addEventListener('click',function(e){if(e.target===this)this.classList.remove('active')});
+});
+document.getElementById('enc-expand').addEventListener('click',function(e){
+  if(e.target===this)closeEnc();
+});
+
+// ── ARTICLE EXPAND ──
+function openArticle(){
+  document.getElementById('enc-expand-content').innerHTML=`
+    <h2>India's Urban Heat Crisis: From Welfare to Rights</h2>
+    <p><em>April 2026 · Arkraj Biswas · National CAMPA / GRAAM Embark Fellowship</em></p>
+    <p>India's cities are heating up — literally. As urban heat islands intensify across Surat, Indore, Ranchi, and Visakhapatnam, the Nagar Van Yojana (NVY) emerges not merely as an afforestation scheme, but as a critical mechanism in a deeper paradigm shift: from viewing urban forests as welfare amenities to recognizing green space access as a fundamental environmental right.</p>
+    <p>This essay interrogates the tension between NVY's quantitative reporting logic — tree counts, survival rates, NDVI indices — and the more complex, contested terrain of distributive justice in urban green space. Who benefits from a city forest? Which communities bear the land acquisition cost? How does spatial proximity to an NVY site correlate with socioeconomic status?</p>
+    <p>Across four cities visited during this fellowship year, a consistent pattern emerges: NVY forests are disproportionately located on land that is geographically accessible to middle and upper-income localities, while peri-urban and informal settlement communities — often the most exposed to urban heat — remain underserved by the scheme's current spatial planning logic.</p>
+    <p>The welfare-to-rights paradigm demands we reframe the question: not merely "How many trees were planted?" but "Whose well-being improved? Who gained livelihood stability? Who was included in the governance of this public good?"</p>
+    <p style="color:var(--accent);font-family:var(--body-font);font-size:12px">[ ARTICLE CONTINUES — FULL VERSION COMING SOON ]</p>
+  `;
+  document.getElementById('enc-expand').classList.add('active');
+}
+</script>
+</body>
+</html>
